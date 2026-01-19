@@ -50,13 +50,13 @@ const translations: Translations = {
     ja: '輸送中の商品',
     en: 'Units in transit',
   },
-  'metrics.storage': {
-    ja: '店舗在庫',
-    en: 'Store Stock',
+  'metrics.onDisplay': {
+    ja: '店舗内展示中',
+    en: 'On Display',
   },
-  'metrics.storage.subtitle': {
-    ja: '店舗在庫数',
-    en: 'In store inventory',
+  'metrics.onDisplay.subtitle': {
+    ja: '現在展示中',
+    en: 'Currently on shelves',
   },
   'inventory.title': {
     ja: '商品在庫状況',
@@ -65,6 +65,10 @@ const translations: Translations = {
   'inventory.loading': {
     ja: '商品を読み込んでいます...',
     en: 'Loading products...',
+  },
+  'product.shown': {
+    ja: '展示中',
+    en: 'Shown',
   },
   'product.storage': {
     ja: '店舗在庫',
@@ -91,12 +95,16 @@ const translations: Translations = {
     en: 'hours',
   },
   'product.emptyIn': {
-    ja: '時間後に在庫切れ（予測）',
-    en: 'hours until empty',
+    ja: '時間後に展示品切れ（予測）',
+    en: 'Empty in',
+  },
+  'alert.lowDisplay': {
+    ja: '展示商品不足',
+    en: 'Low On Display Alert',
   },
   'alert.lowStore': {
-    ja: '店舗在庫不足',
-    en: 'Low Store Stock Alert',
+    ja: '展示+店舗在庫不足',
+    en: 'Low On Display + In Store Stock Alert',
   },
   'alert.critical': {
     ja: '緊急在庫不足',

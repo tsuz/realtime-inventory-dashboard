@@ -44,10 +44,10 @@ function App() {
     }
   }
 
-  const totalItems = products.reduce((sum, p) => sum + p.inventory_in_store, 0);
-  const lowStockItems = products.filter(p => p.inventory_in_store < p.minimum_threshold).length;
+  const totalItems = products.reduce((sum, p) => sum + p.shown_in_store, 0);
+  const lowStockItems = products.filter(p => p.shown_in_store < p.minimum_threshold).length;
   const totalDelivery = products.reduce((sum, p) => sum + p.in_delivery, 0);
-  const totalStorage = products.reduce((sum, p) => sum + p.inventory_in_store, 0);
+  const totalShownInStore = products.reduce((sum, p) => sum + p.shown_in_store, 0);
 
   const getSortedProducts = () => {
     if (fixedPosition) {
@@ -55,8 +55,8 @@ function App() {
     }
 
     return [...products].sort((a, b) => {
-      const aTotalAvailable = a.inventory_in_store;
-      const bTotalAvailable = b.inventory_in_store;
+      const aTotalAvailable = a.shown_in_store + a.inventory_in_store;
+      const bTotalAvailable = b.shown_in_store + b.inventory_in_store;
       const aExpectedSales3h = a.sales_per_hour * 3;
       const bExpectedSales3h = b.sales_per_hour * 3;
       const aIsCritical = aExpectedSales3h > aTotalAvailable;
@@ -65,17 +65,17 @@ function App() {
       if (aIsCritical && !bIsCritical) return -1;
       if (!aIsCritical && bIsCritical) return 1;
 
-      const aIsOutOfStock = a.inventory_in_store === 0;
-      const bIsOutOfStock = b.inventory_in_store === 0;
+      const aIsOutOfStock = a.shown_in_store === 0;
+      const bIsOutOfStock = b.shown_in_store === 0;
 
       if (aIsOutOfStock && !bIsOutOfStock) return -1;
       if (!aIsOutOfStock && bIsOutOfStock) return 1;
 
-      const aIsLowStorage = a.inventory_in_store < a.minimum_threshold;
-      const bIsLowStorage = b.inventory_in_store < b.minimum_threshold;
+      const aIsLowDisplay = a.shown_in_store < a.minimum_threshold;
+      const bIsLowDisplay = b.shown_in_store < b.minimum_threshold;
 
-      if (aIsLowStorage && !bIsLowStorage) return -1;
-      if (!aIsLowStorage && bIsLowStorage) return 1;
+      if (aIsLowDisplay && !bIsLowDisplay) return -1;
+      if (!aIsLowDisplay && bIsLowDisplay) return 1;
 
       return a.category.localeCompare(b.category);
     });
@@ -120,11 +120,11 @@ function App() {
             subtitle={t('metrics.inDelivery.subtitle')}
           />
           <MetricCard
-            title={t('metrics.storage')}
-            value={totalStorage}
-            icon={Package}
+            title={t('metrics.onDisplay')}
+            value={totalShownInStore}
+            icon={Store}
             iconColor="text-emerald-400"
-            subtitle={t('metrics.storage.subtitle')}
+            subtitle={t('metrics.onDisplay.subtitle')}
           />
         </div>
 

@@ -8,8 +8,7 @@ interface StackedBarGraphProps {
 
 export default function StackedBarGraph({ product }: StackedBarGraphProps) {
   const { t, getProductName, formatDateTime } = useLocale();
-  const total = product.shown_in_store + product.inventory_in_store + product.in_delivery;
-  const shownPercentage = (product.shown_in_store / total) * 100;
+  const total = product.inventory_in_store + product.in_delivery;
   const inventoryPercentage = (product.inventory_in_store / total) * 100;
   const deliveryPercentage = (product.in_delivery / total) * 100;
 
@@ -73,15 +72,7 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
         <div className="flex items-center gap-3">
           <div className="w-full h-8 bg-[#0E1013] rounded-md overflow-hidden flex">
             <div
-              className={`${isLowDisplay ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-emerald-500 to-emerald-600'} flex items-center justify-center transition-all duration-500`}
-              style={{ width: `${shownPercentage}%` }}
-            >
-              {shownPercentage > 10 && (
-                <span className="text-xs font-semibold text-white">{product.shown_in_store}</span>
-              )}
-            </div>
-            <div
-              className="bg-yellow-500/70 flex items-center justify-center transition-all duration-500"
+              className={`${isLowStorage ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-yellow-500 to-yellow-600'} flex items-center justify-center transition-all duration-500`}
               style={{ width: `${inventoryPercentage}%` }}
             >
               {inventoryPercentage > 10 && (
@@ -102,12 +93,7 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
 
         <div className="flex items-center gap-4 text-xs">
           <div className="flex items-center gap-1.5">
-            <div className={`w-2.5 h-2.5 rounded-sm ${isLowDisplay ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
-            <span className="text-[#A0A4A8]">{t('product.shown')}:</span>
-            <span className="text-white font-medium">{product.shown_in_store}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm bg-yellow-500/70"></div>
+            <div className={`w-2.5 h-2.5 rounded-sm ${isLowStorage ? 'bg-red-500' : 'bg-yellow-500'}`}></div>
             <span className="text-[#A0A4A8]">{t('product.storage')}:</span>
             <span className="text-white font-medium">{product.inventory_in_store}</span>
           </div>

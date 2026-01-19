@@ -97,7 +97,7 @@ function App() {
           <p className="text-[#A0A4A8]">{t('app.subtitle')}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <MetricCard
             title={t('metrics.totalUnits')}
             value={totalItems.toLocaleString()}
@@ -118,13 +118,6 @@ function App() {
             icon={Truck}
             iconColor="text-amber-400"
             subtitle={t('metrics.inDelivery.subtitle')}
-          />
-          <MetricCard
-            title={t('metrics.onDisplay')}
-            value={totalShownInStore}
-            icon={Store}
-            iconColor="text-emerald-400"
-            subtitle={t('metrics.onDisplay.subtitle')}
           />
         </div>
 

@@ -9,19 +9,19 @@ interface StackedBarGraphProps {
 export default function StackedBarGraph({ product }: StackedBarGraphProps) {
   const { t, getProductName, formatDateTime } = useLocale();
   const total = product.shown_in_store + product.inventory_in_store + product.in_delivery;
-  const shownPercentage = (product.shown_in_store / total) * 100;
-  const inventoryPercentage = (product.inventory_in_store / total) * 100;
+  const shownPercentage = (product.inventory_in_store / total) * 100;
+  const inventoryPercentage = (product.shown_in_store / total) * 100;
   const deliveryPercentage = (product.in_delivery / total) * 100;
 
-  const isLowDisplay = product.shown_in_store < product.minimum_threshold;
-  const isLowStorage = product.inventory_in_store < product.minimum_threshold;
+  const isLowDisplay = product.inventory_in_store < product.minimum_threshold;
+  const isLowStorage = product.shown_in_store < product.minimum_threshold;
   const isCritical = isLowDisplay && isLowStorage;
 
-  const remaining1h = product.shown_in_store - product.sales_per_hour;
-  const remaining2h = product.shown_in_store - (product.sales_per_hour * 2);
-  const remaining3h = product.shown_in_store - (product.sales_per_hour * 3);
+  const remaining1h = product.inventory_in_store - product.sales_per_hour;
+  const remaining2h = product.inventory_in_store - (product.sales_per_hour * 2);
+  const remaining3h = product.inventory_in_store - (product.sales_per_hour * 3);
 
-  const hoursUntilEmpty = product.shown_in_store > 0 ? product.shown_in_store / product.sales_per_hour : 0;
+  const hoursUntilEmpty = product.inventory_in_store > 0 ? product.inventory_in_store / product.sales_per_hour : 0;
 
   const noDelivery = product.in_delivery === 0;
   const totalAvailable = product.shown_in_store + product.inventory_in_store;
@@ -77,7 +77,7 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
               style={{ width: `${shownPercentage}%` }}
             >
               {shownPercentage > 10 && (
-                <span className="text-xs font-semibold text-white">{product.shown_in_store}</span>
+                <span className="text-xs font-semibold text-white">{product.inventory_in_store}</span>
               )}
             </div>
             <div
@@ -85,7 +85,7 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
               style={{ width: `${inventoryPercentage}%` }}
             >
               {inventoryPercentage > 10 && (
-                <span className="text-xs font-semibold text-white">{product.inventory_in_store}</span>
+                <span className="text-xs font-semibold text-white">{product.shown_in_store}</span>
               )}
             </div>
             <div
@@ -104,12 +104,12 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
           <div className="flex items-center gap-1.5">
             <div className={`w-2.5 h-2.5 rounded-sm ${isLowDisplay ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
             <span className="text-[#A0A4A8]">{t('product.shown')}:</span>
-            <span className="text-white font-medium">{product.shown_in_store}</span>
+            <span className="text-white font-medium">{product.inventory_in_store}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-yellow-500/70"></div>
             <span className="text-[#A0A4A8]">{t('product.storage')}:</span>
-            <span className="text-white font-medium">{product.inventory_in_store}</span>
+            <span className="text-white font-medium">{product.shown_in_store}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-gray-500"></div>

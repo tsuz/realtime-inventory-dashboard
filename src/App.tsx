@@ -44,10 +44,10 @@ function App() {
     }
   }
 
-  const totalItems = products.reduce((sum, p) => sum + p.shown_in_store, 0);
-  const lowStockItems = products.filter(p => p.shown_in_store < p.minimum_threshold).length;
+  const totalItems = products.reduce((sum, p) => sum + p.inventory_in_store, 0);
+  const lowStockItems = products.filter(p => p.inventory_in_store < p.minimum_threshold).length;
   const totalDelivery = products.reduce((sum, p) => sum + p.in_delivery, 0);
-  const totalShownInStore = products.reduce((sum, p) => sum + p.shown_in_store, 0);
+  const totalShownInStore = products.reduce((sum, p) => sum + p.inventory_in_store, 0);
 
   const getSortedProducts = () => {
     if (fixedPosition) {
@@ -65,14 +65,14 @@ function App() {
       if (aIsCritical && !bIsCritical) return -1;
       if (!aIsCritical && bIsCritical) return 1;
 
-      const aIsOutOfStock = a.shown_in_store === 0;
-      const bIsOutOfStock = b.shown_in_store === 0;
+      const aIsOutOfStock = a.inventory_in_store === 0;
+      const bIsOutOfStock = b.inventory_in_store === 0;
 
       if (aIsOutOfStock && !bIsOutOfStock) return -1;
       if (!aIsOutOfStock && bIsOutOfStock) return 1;
 
-      const aIsLowDisplay = a.shown_in_store < a.minimum_threshold;
-      const bIsLowDisplay = b.shown_in_store < b.minimum_threshold;
+      const aIsLowDisplay = a.inventory_in_store < a.minimum_threshold;
+      const bIsLowDisplay = b.inventory_in_store < b.minimum_threshold;
 
       if (aIsLowDisplay && !bIsLowDisplay) return -1;
       if (!aIsLowDisplay && bIsLowDisplay) return 1;

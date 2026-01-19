@@ -8,23 +8,20 @@ interface StackedBarGraphProps {
 
 export default function StackedBarGraph({ product }: StackedBarGraphProps) {
   const { t, getProductName, formatDateTime } = useLocale();
-  const total = product.shown_in_store + product.inventory_in_store + product.in_delivery;
-  const shownPercentage = (product.shown_in_store / total) * 100;
+  const total = product.inventory_in_store + product.in_delivery;
   const inventoryPercentage = (product.inventory_in_store / total) * 100;
   const deliveryPercentage = (product.in_delivery / total) * 100;
 
-  const isLowDisplay = product.shown_in_store < product.minimum_threshold;
   const isLowStorage = product.inventory_in_store < product.minimum_threshold;
-  const isCritical = isLowDisplay && isLowStorage;
 
-  const remaining1h = product.shown_in_store - product.sales_per_hour;
-  const remaining2h = product.shown_in_store - (product.sales_per_hour * 2);
-  const remaining3h = product.shown_in_store - (product.sales_per_hour * 3);
+  const remaining1h = product.inventory_in_store - product.sales_per_hour;
+  const remaining2h = product.inventory_in_store - (product.sales_per_hour * 2);
+  const remaining3h = product.inventory_in_store - (product.sales_per_hour * 3);
 
-  const hoursUntilEmpty = product.shown_in_store > 0 ? product.shown_in_store / product.sales_per_hour : 0;
+  const hoursUntilEmpty = product.inventory_in_store > 0 ? product.inventory_in_store / product.sales_per_hour : 0;
 
   const noDelivery = product.in_delivery === 0;
-  const totalAvailable = product.shown_in_store + product.inventory_in_store;
+  const totalAvailable = product.inventory_in_store;
   const expectedSales3h = product.sales_per_hour * 3;
   const isCriticalShortage = expectedSales3h > totalAvailable;
 
@@ -43,15 +40,10 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
                 <AlertTriangle className="w-3 h-3 text-red-500" />
                 <span className="text-xs text-red-500 font-medium">{t('alert.critical')}</span>
               </div>
-            ) : isCritical ? (
+            ) : isLowStorage ? (
               <div className="flex items-center gap-1 bg-red-500/20 border border-red-500/50 rounded px-2 py-0.5">
                 <AlertTriangle className="w-3 h-3 text-red-500" />
                 <span className="text-xs text-red-500 font-medium">{t('alert.lowStore')}</span>
-              </div>
-            ) : isLowDisplay ? (
-              <div className="flex items-center gap-1 bg-red-500/20 border border-red-500/50 rounded px-2 py-0.5">
-                <AlertTriangle className="w-3 h-3 text-red-500" />
-                <span className="text-xs text-red-500 font-medium">{t('alert.lowDisplay')}</span>
               </div>
             ) : null}
           </div>
@@ -73,15 +65,7 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
         <div className="flex items-center gap-3">
           <div className="w-full h-8 bg-[#0E1013] rounded-md overflow-hidden flex">
             <div
-              className={`${isLowDisplay ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-emerald-500 to-emerald-600'} flex items-center justify-center transition-all duration-500`}
-              style={{ width: `${shownPercentage}%` }}
-            >
-              {shownPercentage > 10 && (
-                <span className="text-xs font-semibold text-white">{product.shown_in_store}</span>
-              )}
-            </div>
-            <div
-              className="bg-yellow-500/70 flex items-center justify-center transition-all duration-500"
+              className={`${isLowStorage ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-emerald-500 to-emerald-600'} flex items-center justify-center transition-all duration-500`}
               style={{ width: `${inventoryPercentage}%` }}
             >
               {inventoryPercentage > 10 && (
@@ -102,12 +86,7 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
 
         <div className="flex items-center gap-4 text-xs">
           <div className="flex items-center gap-1.5">
-            <div className={`w-2.5 h-2.5 rounded-sm ${isLowDisplay ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
-            <span className="text-[#A0A4A8]">{t('product.shown')}:</span>
-            <span className="text-white font-medium">{product.shown_in_store}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm bg-yellow-500/70"></div>
+            <div className={`w-2.5 h-2.5 rounded-sm ${isLowStorage ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
             <span className="text-[#A0A4A8]">{t('product.storage')}:</span>
             <span className="text-white font-medium">{product.inventory_in_store}</span>
           </div>

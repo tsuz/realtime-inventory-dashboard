@@ -102,11 +102,6 @@ export default function StackedBarGraph({ product }: StackedBarGraphProps) {
 
         <div className="flex items-center gap-4 text-xs">
           <div className="flex items-center gap-1.5">
-            <div className={`w-2.5 h-2.5 rounded-sm ${isLowDisplay ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
-            <span className="text-[#A0A4A8]">{t('product.shown')}:</span>
-            <span className="text-white font-medium">{product.inventory_in_store}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-yellow-500/70"></div>
             <span className="text-[#A0A4A8]">{t('product.storage')}:</span>
             <span className="text-white font-medium">{product.shown_in_store}</span>
